@@ -1,0 +1,26 @@
+<html>
+    <head>
+        <title>Input Page</title>
+    </head>
+    <body>
+        <form th:action="@{/page/submit}" th:object="${form}" method="post">
+            <div>
+                <span>String value:</span><input type="text" th:field="*{strVal}" />
+                <!-- jsr303 handling, must use "message" to set custom message keys -->
+                <div th:if="${#fields.hasErrors('strVal')}">
+                    <div th:each="detailedError : ${#fields.detailedErrors('strVal')}">
+                        <p th:text="#{__${detailedError.getMessage()}__}"></p>
+                    </div>
+                </div>
+            </div>
+            <div>
+                <span>Integer value:</span><input type="number" th:field="*{intVal}" />
+                <!-- spring validator handling -->
+                <div th:if="${#fields.hasErrors('intVal')}">
+                    <p th:text="#{__${#fields.detailedErrors('intVal')[0].getCode()}__}"></p>
+                </div>
+            </div>
+            <button type="submit">Submit</button>
+        </form>
+    </body>
+</html>
